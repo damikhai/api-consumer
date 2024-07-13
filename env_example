@@ -1,0 +1,4 @@
+BASE_URL="/v1/group/"
+HOSTS='["node1.example.com", "node2.example.com", "node3.example.com"]'
+RETRY_COUNT=3
+WAIT_BETWEEN_RETRIES=10
