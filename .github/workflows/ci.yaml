@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  ruff:
+    name: ruff
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Common setup
+      uses: ./.github/actions/common-steps
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: pip install ruff
+
+    - name: Lint with ruff
+      run: ruff check .
+
+  pytest:
+    name: pytest
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Common setup
+      uses: ./.github/actions/common-steps
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry
+        poetry install --only main,test
+
+    - name: Run tests with pytest
+      run: poetry run pytest

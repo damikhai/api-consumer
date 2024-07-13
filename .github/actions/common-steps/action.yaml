@@ -1,0 +1,14 @@
+name: 'Common Steps'
+description: 'Common steps for setting up the environment'
+inputs:
+  python-version:
+    description: 'Python version to use'
+    required: true
+    default: '3.11'
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
