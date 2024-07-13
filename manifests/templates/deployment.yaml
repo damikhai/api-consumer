@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "api-consumer.fullname" . }}
+  labels:
+    {{- include "api-consumer.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "api-consumer.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      # helm trick https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+      labels:
+        {{- include "api-consumer.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: api-consumer
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi

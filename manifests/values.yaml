@@ -1,0 +1,18 @@
+replicaCount: 1
+
+image:
+  repository: "api-consumer"
+  tag: "latest"
+
+hosts:
+  - node1.example.com
+  - node2.example.com
+  - node3.example.com
+
+resources:
+  limits:
+    cpu: 64m
+    memory: 64Mi
+  requests:
+    cpu: 32m
+    memory: 32Mi
